@@ -11,6 +11,6 @@ RUN mvn -f /home/app/pom.xml clean package
 # Package stage
 #
 FROM openjdk:11-jre-slim
-COPY --from=build /home/app/target/spring-boot-ecommerce-0.0.1-SNAPSHOT.jar /usr/local/lib/spring-boot-ecommerce.jar
+COPY --from=build /home/app/target/spring-boot-health-0.0.1-SNAPSHOT.jar /usr/local/lib/spring-boot-health.jar
 EXPOSE 8443
-ENTRYPOINT ["java","-jar","/usr/local/lib/spring-boot-ecommerce.jar"]
+ENTRYPOINT ["java","-jar","/usr/local/lib/spring-boot-health.jar"]
