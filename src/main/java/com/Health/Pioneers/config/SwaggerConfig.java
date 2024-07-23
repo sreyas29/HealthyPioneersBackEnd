@@ -18,29 +18,37 @@ import java.util.Collections;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig implements WebMvcConfigurer {
+public class SwaggerConfig {
 
 
+//    @Bean
+//    public Docket api() {
+//
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("com.Health.Pioneers"))
+//                .paths(PathSelectors.any())
+//                .build();
+////                .apiInfo(this.customInfo());
+//    }
     @Bean
     public Docket api() {
-
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.Health.Pioneers"))
                 .paths(PathSelectors.any())
                 .build();
-//                .apiInfo(this.customInfo());
     }
 
 
 
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+//    @Override
+//    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+//
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//    }
 }
