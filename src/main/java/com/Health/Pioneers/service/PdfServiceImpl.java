@@ -1,6 +1,8 @@
 package com.Health.Pioneers.service;
 
 import com.Health.Pioneers.dao.CustomerRepository;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,13 +40,13 @@ public class PdfServiceImpl implements PdfService {
     public Map<String, String> extractKeyValuePairs(MultipartFile file) {
         Map<String, String> keyValuePairs = new HashMap<>();
 
-//        try (PDDocument document = PDDocument.load(file.getInputStream())) {
-//            PDFTextStripper stripper = new PDFTextStripper();
-//            String text = stripper.getText(document);
-//            keyValuePairs = parseTextToKeyValuePairs(text);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            String text = stripper.getText(document);
+            keyValuePairs = parseTextToKeyValuePairs(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return keyValuePairs;
     }
