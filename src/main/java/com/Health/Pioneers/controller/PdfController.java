@@ -1,6 +1,8 @@
 package com.Health.Pioneers.controller;
 
 import com.Health.Pioneers.service.PdfService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,8 @@ public class PdfController {
     }
 
     @PostMapping("/analyzePdf")
-    public ResponseEntity<?> analyzePdf(@RequestParam("file") MultipartFile file) {
+    @ApiOperation(value = "Upload PDF File", notes = "Endpoint to upload a PDF file")
+    public ResponseEntity<?> analyzePdf(@ApiParam(value = "PDF file to upload", required = true) @RequestPart("file") MultipartFile file) {
         // Check if the file is empty
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("File is empty");
