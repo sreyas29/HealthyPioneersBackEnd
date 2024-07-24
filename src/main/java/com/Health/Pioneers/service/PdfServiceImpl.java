@@ -1,6 +1,8 @@
 package com.Health.Pioneers.service;
 
 import com.Health.Pioneers.dao.CustomerRepository;
+import com.Health.Pioneers.dao.PdfDocumentRepository;
+import com.Health.Pioneers.entity.PdfDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class PdfServiceImpl implements PdfService {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private PdfDocumentRepository pdfDocumentRepository;
+
+    @Autowired
     public PdfServiceImpl(CustomerRepository customerRepository, @Value("${stripe.key.secret}") String secretKey) {
         this.customerRepository = customerRepository;
 
@@ -29,7 +34,7 @@ public class PdfServiceImpl implements PdfService {
 
     @Override
     public void analyzePdf() {
-
+        System.out.println("Coming to this page");
     }
 
     @Override
@@ -43,6 +48,11 @@ public class PdfServiceImpl implements PdfService {
         try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
+
+            document.close();
+            PdfDocument pdfDocument = new PdfDocument(text.substring(0,200));
+
+            pdfDocumentRepository.save(pdfDocument);
             keyValuePairs = parseTextToKeyValuePairs(text);
         } catch (IOException e) {
             e.printStackTrace();
