@@ -50,6 +50,7 @@ public class PdfServiceImpl implements PdfService {
             String text = stripper.getText(document);
 
             document.close();
+
             PdfDocument pdfDocument = new PdfDocument(text.substring(0,200));
 
             pdfDocumentRepository.save(pdfDocument);

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -28,6 +28,8 @@ public class PdfController {
     @Autowired
     private CustomerService customerService;
 
+
+
     public PdfController(PdfService pdfService) {
         this.pdfService = pdfService;
     }
@@ -35,21 +37,35 @@ public class PdfController {
     @PostMapping("/analyzePdf")
     @ApiOperation(value = "Upload PDF File", notes = "Endpoint to upload a PDF file")
     public ResponseEntity<?> analyzePdf(@ApiParam(value = "PDF file to upload", required = true) @RequestPart("file") MultipartFile file) {
+        Map<String, List<String>> vitamap =null;
+        Map<String, String>  listOfRequirement=null;
+
+        Map<String, List<String>> listOfVegetableWith=new HashMap<>();
+        // Nothing is uploaded
+        if(file == null){
+            return ResponseEntity.badRequest().body("Nothing is uploaded");
+        }
         // Check if the file is empty
-        if (file.isEmpty()) {
+        else if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("File is empty");
         }
 
         // Check if the file is a PDF
-        if (!file.getContentType().equals("application/pdf")) {
+        else if (!file.getContentType().equals("application/pdf")) {
             return ResponseEntity.badRequest().body("Only PDF files are allowed");
         }
-        Map<String, String>  listOfRequirement=pdfService.extractKeyValuePairs(file);
-        Customer  customer= new Customer("Prasad", "Sahoo","prasadsahoo@gmail.com");
-        customer.setListOfRecords(listOfRequirement);
-        customerService.savedCustomerDetails(customer);
+        else{
+            listOfRequirement=pdfService.extractKeyValuePairs(file);
+            if(file != null && !file.isEmpty()) {
+                Customer customer= new Customer();
+                listOfVegetableWith=customerService.savedCustomerDetails(customer, file, listOfRequirement);
 
-        return new ResponseEntity<>(listOfRequirement, HttpStatus.OK);
+
+            }
+        }
+
+
+        return new ResponseEntity<>(listOfVegetableWith, HttpStatus.OK);
     }
 
 
@@ -69,6 +85,7 @@ public class PdfController {
 
     @GetMapping("/search")
     public String search(@RequestParam Map<String, String> params) {
+
         return aiService.search(params);
     }
 

@@ -1,14 +1,13 @@
 package com.Health.Pioneers.entity;
 
+import com.Health.Pioneers.converter.ListToStringConverter;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "customer")
@@ -29,8 +28,22 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
+
+
     @ElementCollection
     private Map<String,String> listOfRecords;
+
+    @Column(name = "filename")
+    private String filename;
+
+//    @ElementCollection
+//    @CollectionTable(name = "my_entity_map", joinColumns = @JoinColumn(name = "entity_id"))
+//    @MapKeyColumn(name = "map_key")
+//    @Column(name = "map_value")
+//    @Convert(converter = ListToStringConverter.class)
+//    private Map<String,List<String>> listOfFruitsAndVegtables=new HashMap<>();
+
+    private String listOfVeg;
 
     public Customer(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -77,7 +90,31 @@ public class Customer {
         return listOfRecords;
     }
 
+//    public Map<String, List<String>> getListOfFruitsAndVegtables() {
+//        return listOfFruitsAndVegtables;
+//    }
+//
+//    public void setListOfFruitsAndVegtables(Map<String, List<String>> listOfFruitsAndVegtables) {
+//        this.listOfFruitsAndVegtables = listOfFruitsAndVegtables;
+//    }
+
     public void setListOfRecords(Map<String, String> listOfRecords) {
         this.listOfRecords = listOfRecords;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getListOfVeg() {
+        return listOfVeg;
+    }
+
+    public void setListOfVeg(String listOfVeg) {
+        this.listOfVeg = listOfVeg;
     }
 }
